@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 import sklearn
 from sklearn.preprocessing import Imputer
+import matplotlib.pyplot as plt
 
 def clean_data(*args):
 
@@ -37,6 +38,12 @@ def impute_matrix(matrix):
 	new_matrix = imputer.fit_transform(matrix)
 	return new_matrix
 
+def normalize_data(matrix):
+	scaler = sklearn.preprocessing.StandardScaler().fit(matrix)
+	new_matrix = scaler.transform(matrix)
+	return new_matrix
+
+
 if __name__ == "__main__":
 
 	X, y = clean_data('AusOpen-men-2013.csv', 'AusOpen-women-2013.csv', 'FrenchOpen-men-2013.csv',
@@ -45,6 +52,15 @@ if __name__ == "__main__":
 
 	# 4762 NA values; we remove these through mean imputation
 	X = impute_matrix(X)
+	
+	# plot values 
+	plt.hist(X[:,0], bins=50)
+	plt.show()
+
+	# mean normalize and feature scale X
+	X = normalize_data(X)
+
+
 	
 
 
